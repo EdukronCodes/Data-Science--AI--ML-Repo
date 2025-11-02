@@ -1,0 +1,29 @@
+{
+  "name": "ml-algorithms-docs",
+  "version": "1.0.0",
+  "description": "Documentation for various machine learning algorithms.",
+  "main": "index.js",
+  "scripts": {
+    "build": "mkdocs build",
+    "serve": "mkdocs serve",
+    "deploy": "mkdocs gh-deploy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ml-algorithms-docs.git"
+  },
+  "keywords": [
+    "machine learning",
+    "documentation",
+    "algorithms"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "mkdocs": "^1.2.3",
+    "mkdocs-material": "^8.0.0"
+  },
+  "devDependencies": {
+    "markdownlint": "^0.24.0"
+  }
+}
