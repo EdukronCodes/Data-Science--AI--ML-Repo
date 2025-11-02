@@ -1,6 +1,6 @@
-# Linear Regression
+# Self-Training Classifier
 
-> Comprehensive, end-to-end reference for Linear Regression. Sections follow the "Flow for Learning an ML Algorithm" format:
+> Comprehensive, end-to-end reference for Self-Training Classifier. Sections follow the "Flow for Learning an ML Algorithm" format:
 > Flow, Overview, Math, Loss, Optimization, Hyperparameters, Assumptions, Pros/Cons, Pseudocode, From-scratch implementation, Library examples, Tuning, Metrics, Bias-Variance, Overfitting, Comparisons, Use cases, Projects, Scalability, Interview Qs.
 
 ---
@@ -30,10 +30,10 @@ Notes:
 ## Algorithm Overview & Intuition
 
 
-Linear Regression — description, intuition, and when to use it.
+Self-Training Classifier — description, intuition, and when to use it.
 
 Intuition:
-- High-level description of how Linear Regression maps inputs to outputs.
+- High-level description of how Self-Training Classifier maps inputs to outputs.
 - Visual intuition suggestions: plots of decision boundaries (classification), fitted curves (regression), cluster centroids (clustering).
 
 Example intuitive scenario:
@@ -43,7 +43,7 @@ Example intuitive scenario:
 ## Problem Type & Use Cases
 
 
-- Primary problem type: Regression
+- Primary problem type: Classification
 
 
 Typical domains and concrete use cases:
@@ -136,39 +136,6 @@ def fit_example(X, y, **kwargs):
 def predict_example(params, X):
     raise NotImplementedError
 ```
-
-
-### From-scratch Linear Regression (NumPy)
-
-```python
-# filepath: examples/linear_regression_scratch.py
-import numpy as np
-
-def fit_linear_regression(X, y, l2=0.0):
-    # X: (n, d), y: (n,)
-    n, d = X.shape
-    Xb = np.hstack([np.ones((n,1)), X])  # add bias
-    I = np.eye(d+1)
-    I[0,0] = 0  # don't regularize bias
-    A = Xb.T @ Xb + l2 * I
-    w = np.linalg.solve(A, Xb.T @ y)
-    return w
-
-def predict_linear_regression(w, X):
-    n = X.shape[0]
-    Xb = np.hstack([np.ones((n,1)), X])
-    return Xb @ w
-
-if __name__ == "__main__":
-    # simple sanity check
-    rng = np.random.default_rng(0)
-    X = rng.normal(size=(100,2))
-    true_w = np.array([1.5, -2.0, 0.5])
-    y = np.hstack([np.ones((100,1)), X]) @ true_w + rng.normal(scale=0.1, size=100)
-    w = fit_linear_regression(X, y, l2=1e-6)
-    print("Estimated weights:", w)
-```
-
 
 
 ## Implementation using ML Libraries

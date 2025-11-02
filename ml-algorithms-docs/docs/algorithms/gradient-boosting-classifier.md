@@ -1,6 +1,6 @@
-# Linear Regression
+# Gradient Boosting Classifier
 
-> Comprehensive, end-to-end reference for Linear Regression. Sections follow the "Flow for Learning an ML Algorithm" format:
+> Comprehensive, end-to-end reference for Gradient Boosting Classifier. Sections follow the "Flow for Learning an ML Algorithm" format:
 > Flow, Overview, Math, Loss, Optimization, Hyperparameters, Assumptions, Pros/Cons, Pseudocode, From-scratch implementation, Library examples, Tuning, Metrics, Bias-Variance, Overfitting, Comparisons, Use cases, Projects, Scalability, Interview Qs.
 
 ---
@@ -30,10 +30,10 @@ Notes:
 ## Algorithm Overview & Intuition
 
 
-Linear Regression — description, intuition, and when to use it.
+Gradient Boosting Classifier — description, intuition, and when to use it.
 
 Intuition:
-- High-level description of how Linear Regression maps inputs to outputs.
+- High-level description of how Gradient Boosting Classifier maps inputs to outputs.
 - Visual intuition suggestions: plots of decision boundaries (classification), fitted curves (regression), cluster centroids (clustering).
 
 Example intuitive scenario:
@@ -43,7 +43,7 @@ Example intuitive scenario:
 ## Problem Type & Use Cases
 
 
-- Primary problem type: Regression
+- Primary problem type: Classification
 
 
 Typical domains and concrete use cases:
@@ -138,35 +138,28 @@ def predict_example(params, X):
 ```
 
 
-### From-scratch Linear Regression (NumPy)
+### Library example (scikit-learn / XGBoost)
 
 ```python
-# filepath: examples/linear_regression_scratch.py
+# filepath: examples/ensemble_example.py
+from sklearn.ensemble import RandomForestClassifier
+from xgboost import XGBClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
 import numpy as np
 
-def fit_linear_regression(X, y, l2=0.0):
-    # X: (n, d), y: (n,)
-    n, d = X.shape
-    Xb = np.hstack([np.ones((n,1)), X])  # add bias
-    I = np.eye(d+1)
-    I[0,0] = 0  # don't regularize bias
-    A = Xb.T @ Xb + l2 * I
-    w = np.linalg.solve(A, Xb.T @ y)
-    return w
+# synthetic data
+X = np.random.randn(1000, 20)
+y = (X[:, 0] + 0.5 * X[:, 1] > 0).astype(int)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
-def predict_linear_regression(w, X):
-    n = X.shape[0]
-    Xb = np.hstack([np.ones((n,1)), X])
-    return Xb @ w
+rf = RandomForestClassifier(n_estimators=100, max_depth=8, random_state=0, n_jobs=-1)
+rf.fit(X_train, y_train)
+print("RF:", classification_report(y_test, rf.predict(X_test)))
 
-if __name__ == "__main__":
-    # simple sanity check
-    rng = np.random.default_rng(0)
-    X = rng.normal(size=(100,2))
-    true_w = np.array([1.5, -2.0, 0.5])
-    y = np.hstack([np.ones((100,1)), X]) @ true_w + rng.normal(scale=0.1, size=100)
-    w = fit_linear_regression(X, y, l2=1e-6)
-    print("Estimated weights:", w)
+xgb = XGBClassifier(n_estimators=200, learning_rate=0.05, use_label_encoder=False, eval_metric='logloss')
+xgb.fit(X_train, y_train)
+print("XGB:", classification_report(y_test, xgb.predict(X_test)))
 ```
 
 
